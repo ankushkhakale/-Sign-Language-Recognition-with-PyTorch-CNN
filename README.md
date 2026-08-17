@@ -1,64 +1,84 @@
 # Sign Language Recognition with PyTorch CNN
 
-## Project Overview
-This project implements a Convolutional Neural Network (CNN) using PyTorch to recognize signs from the ASL Alphabet Dataset. The goal is to classify images of hand gestures into their corresponding English alphabet letters.
+This project is a simple, practical introduction to image classification with PyTorch.
+The goal is to teach a model to recognize American Sign Language (ASL) hand signs and map them to alphabet letters.
 
-## Features
--   **Data Loading**: Utilizes `torchvision.datasets.ImageFolder` for efficient loading of image data organized into class-specific folders.
--   **Image Preprocessing**: Applies transformations such as resizing, grayscale conversion,ToTensor, and normalization to prepare images for the CNN.
--   **CNN Model**: A custom-designed CNN architecture in PyTorch for image classification.
--   **Training Loop**: Implements a standard training loop with `CrossEntropyLoss` and `Adam` optimizer.
--   **Evaluation**: Measures the model's accuracy on a separate test set.
+Instead of being a large production system, this repository is built as a learning project: load images, preprocess them, train a CNN, and check how well it predicts.
 
-## Dataset
-This project is designed to work with a dataset structured like the ASL Alphabet Dataset (e.g., from Kaggle). The expected directory structure is:
+## The Story of This Project
 
-```
+When you open this project, you are walking through a complete deep-learning workflow:
+
+1. **Start with labeled hand-sign images** (one folder per letter).
+2. **Clean and standardize the images** so the model gets consistent input.
+3. **Train a CNN** to learn visual patterns from each sign.
+4. **Evaluate on test images** to see how accurately the model generalizes.
+
+That’s it—clear, focused, and easy to extend.
+
+## What You’ll Find Here
+
+- `ASL.ipynb` — the main notebook for training and evaluating the CNN.
+- `crop.ipynb` — notebook for image preparation/cropping workflow.
+- `README.md` — this guide.
+
+## Dataset Layout
+
+The notebooks expect a folder structure similar to this:
+
+```text
 data/
-├── asl_alphabet/
-│   ├── train/
-│   │   ├── A/
-│   │   │   ├── image1.jpg
-│   │   │   └── ...
-│   │   ├── B/
-│   │   └── ...
-│   └── test/
-│       ├── A/
-│       │   ├── image_test1.jpg
-│       │   └── ...
-│       ├── B/
-│       └── ...
+└── asl_alphabet/
+    ├── train/
+    │   ├── A/
+    │   ├── B/
+    │   └── ...
+    └── test/
+        ├── A/
+        ├── B/
+        └── ...
 ```
 
-Each subfolder (e.g., `A`, `B`) within `train` and `test` represents a distinct class (a letter of the ASL alphabet).
+Each letter folder contains images for that class.
+
+## How the Model Works (Simple View)
+
+The `SignLanguageCNN` model follows a common pattern:
+
+- **Convolution + ReLU + Pooling** layers extract visual features from hand images.
+- A **Flatten** step converts feature maps into a vector.
+- **Fully connected layers** produce final class scores for each letter.
+
+Training uses:
+
+- `CrossEntropyLoss` for multi-class classification.
+- `Adam` optimizer for gradient updates.
 
 ## Requirements
-To run this project, you will need the following Python libraries:
--   `torch`
--   `torchvision`
--   `Pillow` (often installed with `torchvision`)
 
-These can typically be installed via pip:
+Install the main dependencies:
+
 ```bash
 pip install torch torchvision
 ```
 
-## Model Architecture
-The `SignLanguageCNN` model consists of:
-1.  Two convolutional layers with ReLU activation and Max Pooling.
-    -   First layer: 1 input channel (grayscale), 32 output channels, 3x3 kernel.
-    -   Second layer: 32 input channels, 64 output channels, 3x3 kernel.
-2.  A `Flatten` layer to convert the 2D feature maps into a 1D vector.
-3.  Two fully connected (linear) layers with ReLU activation for the hidden layer.
-    -   First linear layer: maps from `64 * 16 * 16` (after pooling) to 256 features.
-    -   Second linear layer: maps from 256 features to `num_classes` (26 for ASL alphabet).
+(`Pillow` is usually installed automatically with `torchvision`.)
 
-## Usage
-1.  **Prepare the Dataset**: Ensure your ASL Alphabet dataset is organized into `train` and `test` directories within `./data/asl_alphabet/`, with subfolders for each letter as described above.
-2.  **Run the Notebook**: Execute the code cells sequentially. The script will:
-    -   Load and preprocess the dataset.
-    -   Initialize the CNN model, loss function, and optimizer.
-    -   Train the model for 5 epochs.
-    -   Evaluate the model on the test set and print the accuracy.
-```
-(The specific loss and accuracy values will vary based on hardware, randomness, and dataset characteristics.)
+## Quick Start
+
+1. Place the ASL dataset in `data/asl_alphabet/` using the structure above.
+2. Open `ASL.ipynb`.
+3. Run cells from top to bottom:
+   - load and transform data,
+   - build model,
+   - train for a few epochs,
+   - evaluate test accuracy.
+
+## Expected Output
+
+After training, the notebook prints metrics such as loss and accuracy.
+Exact numbers will vary by dataset version, random seed, and hardware.
+
+## Why This Repository Is Useful
+
+If you are learning computer vision with PyTorch, this project gives you an end-to-end reference that is small enough to understand quickly and flexible enough to improve with your own ideas.
